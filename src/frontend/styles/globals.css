@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+html {
+    font-size: 16px;
+}
+
+* {
+    font-size: 1rem;
+    font-family: 'Nunito';
+}
+
+body {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 3rem;
+}
+h2 {
+    font-size: 2.5rem;
+}
+h3 {
+    font-size: 2rem;
+}
+h4 {
+    font-size: 1.5rem;
+}
+h5 {
+    font-size: 1rem;
+}
+h6 {
+    font-size: 0.9rem;
+}
+
+code, pre, .todo-checkbox {
+    /* todo: import nice monospace font */
+    font-family: monospace;
+}
+
+fieldset {
+    gap: 1rem;
+    display: grid;
+    outline: none;
+    border: 1px solid;
+    align-items: center;
+    border-radius: 1rem;
+    grid-template-columns: 0.3fr 0.6fr 0.1fr;
+}
+
+legend {
+    margin-left: 1rem;
+}
+
+input {
+    outline: none;
+    border: 1px solid;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+}
+
+button {
+    outline: none;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+}
+
+button:hover {
+    box-shadow: 2px 2px 2px #0002;
+}
+
+button:active {
+    box-shadow: inset 2px 2px 2px #0002;
+}
+
+.todo-list ul {
+    margin: 0;
+    padding: 1rem 0.5rem;
+    list-style-type: none;
+}
+
+.todo-item {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    justify-content: space-between;
+}
+
+.todo-item:hover {
+    background: #0001;
+}
+
+.todo-checkbox {
+    cursor: pointer;
+}
+
+.todo-checkbox:hover {
+    border-bottom: 1px dotted;
+}
+
+.todo-options {
+    background-color: #0001;
+    border-radius: 1rem;
+    margin: 1rem 0;
+    padding: 1rem;
+}
+
+.todo-options label {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.todo-options * {
+    cursor: pointer;
+}

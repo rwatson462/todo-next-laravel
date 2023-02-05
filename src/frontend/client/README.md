@@ -1,0 +1,1 @@
+The client directory is for client-side components, e.g. the React frontend

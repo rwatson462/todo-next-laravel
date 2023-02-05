@@ -1,0 +1,1 @@
+The server directory is for server-side components used for api routes
