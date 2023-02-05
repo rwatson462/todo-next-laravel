@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build: docker/next
+    volumes:
+      - "./src/frontend:/app"
+    ports:
+      - "3000:3000"
+    networks:
+      - internal
+      - external
+
+  backend:
+    build: docker/php
+    volumes:
+      - "./src/backend:/app"
+    networks:
+      - internal
+
+  database:
+    image: mysql:8
+    volumes:
+      - "./data/mysql:/var/lib/mysql"
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=todo
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=todo
+    networks:
+      - internal
+
+  cache:
+    image: redis:7
+    volumes:
+      - "./data/redis:/data"
+    networks:
+      - internal
+
+networks:
+  internal:
+  external:
