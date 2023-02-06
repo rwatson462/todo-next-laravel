@@ -5,4 +5,6 @@ RUN apt-get update && apt-get upgrade -y
 RUN mkdir /app
 WORKDIR /app
 
-ENTRYPOINT [ "npm", "run", "dev" ]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT "/entrypoint.sh"
