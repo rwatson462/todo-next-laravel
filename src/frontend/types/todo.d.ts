@@ -1,3 +1,4 @@
+import {NewTodoForm} from "@/client/components/NewTodoForm";
 
 type Tag = {
   name: string,
@@ -14,7 +15,7 @@ type Todo = {
 
 type RemoteTodoRepository = {
   getAll: () => Promise<Todo[]>,
-  create: (data: {title: string, tags: {name: string}[]}) => Promise<Todo>,
+  create: (data: NewTodoForm) => Promise<Todo>,
   complete: (id: number) => Promise<Todo>
   uncomplete: (id: number) => Promise<Todo>
 }

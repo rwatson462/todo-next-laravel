@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import TodoRepository from "../repository/TodoRepository";
 
-type NewTodoForm = {
+export type NewTodoForm = {
   title: string,
   tags: { name: string }[]
 }
@@ -23,10 +23,10 @@ export default function NewTodoForm(): ReactElement {
   }
 
   return (
-    <form onSubmit={handleSubmit(createNewTodo)}>
+    <form onSubmit={handleSubmit(createNewTodo)} className='new-todo-form'>
       <fieldset>
         <legend>Create new todo</legend>
-        <label>Title</label>
+        {/*<label>Title</label>*/}
         <input
           type='text'
           placeholder='Description of todo'

@@ -13,9 +13,9 @@ export default async function handler(
   }
 
   if (req.method?.toUpperCase() === 'POST') {
-    const todoRepository = TodoRepository()
+    const todoRepository = TodoRepository(req.headers.authorization ?? '')
     const incompleteTodo = await todoRepository.uncomplete(Number(todoId))
-    
+
     res.status(200).json(incompleteTodo)
     return
   }

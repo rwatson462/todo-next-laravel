@@ -1,25 +1,60 @@
-import axios from "axios";
+import axios, {AxiosError} from "axios";
+import * as process from "process";
+import {NewTodoForm} from "@/client/components/NewTodoForm";
+import {RemoteTodoRepository} from "@/types/todo";
 
-export default function TodoRepository(): RemoteTodoRepository {
+export default function TodoRepository(userTokenHeader: string): RemoteTodoRepository {
+  const client = axios.create({
+    baseURL: process.env.API_URL,
+    headers: {
+      apikey: process.env.API_KEY,
+      Authorization: userTokenHeader,
+    }
+  })
+
   return {
     getAll: () => (
-      axios.get(`${process.env.API_URL}/todo`)
+      client.get('/todo')
         .then(response => response.data)
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 401 || err.response?.status === 403) {
+            throw new Error('Unauthenticated')
+          }
+          throw new Error(JSON.stringify(err.response?.data))
+        })
     ),
 
-    create: (data) => (
-      axios.put(`${process.env.API_URL}/todo`, data)
+    create: (data: NewTodoForm) => (
+      client.put('/todo', data)
         .then(response => response.data)
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 401 || err.response?.status === 403) {
+            throw new Error('Unauthenticated')
+          }
+          throw new Error(JSON.stringify(err.response?.data))
+        })
     ),
 
-    complete: (id) => (
-      axios.post(`${process.env.API_URL}/todo/${id}/complete`)
+    complete: (id: number) => (
+      client.post(`/todo/${id}/complete`)
         .then(response => response.data)
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 401 || err.response?.status === 403) {
+            throw new Error('Unauthenticated')
+          }
+          throw new Error(JSON.stringify(err.response?.data))
+        })
     ),
 
-    uncomplete: (id) => (
-      axios.post(`${process.env.API_URL}/todo/${id}/uncomplete`)
+    uncomplete: (id: number) => (
+      client.post(`/todo/${id}/uncomplete`)
         .then(response => response.data)
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 401 || err.response?.status === 403) {
+            throw new Error('Unauthenticated')
+          }
+          throw new Error(JSON.stringify(err.response?.data))
+        })
     )
   }
 }

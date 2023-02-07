@@ -1,5 +1,5 @@
 import UserRepository from '@/server/repository/UserRepository'
-import {LoginResponse} from '@/types/user'
+import {LoginResponse, User} from '@/types/user'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type ErrorResponse = {
@@ -11,17 +11,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<LoginResponse|ErrorResponse|string>
 ) {
-  if (req.method?.toUpperCase() === 'PUT') {
+  if (req.method?.toUpperCase() === 'POST') {
     const userRepository = UserRepository()
 
     try {
 
-      const response = await userRepository.register(req.body)
+      const response = await userRepository.login(req.body)
       res.status(200).json(response)
 
     } catch (err) {
+
       const error = (err as {message: ErrorResponse}).message as ErrorResponse
-      console.log(error)
+      console.log(err, error)
       res.status(422).send(error)
 
     }
@@ -29,5 +30,5 @@ export default async function handler(
     return
   }
 
-  res.status(400).send(`Invalid request method ${req.method}, expecting PUT`)
+  res.status(400).send(`Invalid request method ${req.method}, expecting POST`)
 }
