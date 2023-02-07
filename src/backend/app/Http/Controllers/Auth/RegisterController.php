@@ -25,6 +25,14 @@ class RegisterController extends Controller
             'password' => $password
         ]);
 
-        return $user;
+        $token = $user->createToken('login', ['user']);
+
+        return [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+            ],
+            'token' => $token->plainTextToken,
+        ];
     }
 }

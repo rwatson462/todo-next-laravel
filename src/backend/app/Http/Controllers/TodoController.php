@@ -10,7 +10,7 @@ class TodoController extends Controller
     public function create(Request $request)
     {
         $title = $request->input('title');
-        $createdBy = 1;
+        $createdBy = auth()->user()->id;
 
         $todo = Todo::create([
             'title' => $title,
