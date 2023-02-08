@@ -83,6 +83,13 @@ nav ul {
     grid-template-columns: 0.9fr 0.1fr;
 }
 
+.new-todo-form input {
+    border: 0;
+}
+.new-todo-form input:hover {
+    background-color: #0001;
+}
+
 fieldset {
     margin: 1rem 0;
 }
@@ -163,6 +170,11 @@ button:active {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    border-bottom: 1px solid transparent;
+}
+
+.todo-options label:hover {
+    border-bottom: 1px dotted;
 }
 
 .todo-options * {
