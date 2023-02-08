@@ -16,9 +16,11 @@ export default async function handler(
 
   if (req.method?.toUpperCase() === 'POST') {
     const cookies = Cookies(req, res)
-    const todoRepository = TodoRepository(cookies.get('token', ''))
+    const token = cookies.get('token')
+    const todoRepository = TodoRepository(token)
     const incompleteTodo = await todoRepository.uncomplete(Number(todoId))
 
+    cookies.set('token', token, { maxAge: 1800000})  // Should be half an hour
     res.status(200).json(incompleteTodo)
     return
   }

@@ -9,10 +9,12 @@ export default async function handler(
 ) {
   if (req.method?.toUpperCase() === 'PUT') {
     const cookies = Cookies(req, res)
-    const todoRepository = TodoRepository(cookies.get('token', ''))
+    const token = cookies.get('token')
+    const todoRepository = TodoRepository(token)
 
     try {
       const newTodo = await todoRepository.create(req.body)
+      cookies.set('token', token, { maxAge: 1800000})  // Should be half an hour
       res.status(200).json(newTodo)
     } catch (err) {
       const message = (err as {message: string}).message

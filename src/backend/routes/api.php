@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\CheckController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\TodoController;
@@ -10,6 +11,7 @@ Route::middleware('apikey')->group(function() {
     Route::prefix('auth')->group(function () {
         Route::put('register', [RegisterController::class, 'register']);
         Route::post('login', [LoginController::class, 'login']);
+        Route::middleware(['auth:sanctum', 'last-active'])->post('check', [CheckController::class, 'check']);
     });
 
     Route::middleware(['auth:sanctum', 'last-active'])->prefix('todo')->group(function () {

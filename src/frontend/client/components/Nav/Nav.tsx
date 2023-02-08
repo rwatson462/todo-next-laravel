@@ -1,10 +1,11 @@
-import {ReactElement, ReactNode} from "react";
+import React, {ReactElement} from "react";
 import useAuth from "@/client/Auth/Hooks/useAuth";
 
 export default function Nav(): ReactElement {
   const auth = useAuth()
 
-  function doLogout() {
+  function doLogout(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault()
     auth.logout()
   }
 
@@ -12,8 +13,8 @@ export default function Nav(): ReactElement {
     <nav>
       <ul>
         {auth.isLoggedIn() && (
-          <li>
-            <a href='' onClick={() => doLogout()}>Logout</a>
+          <li className='right'>
+            <button onClick={e => doLogout(e)}>Logout</button>
           </li>
         )}
       </ul>

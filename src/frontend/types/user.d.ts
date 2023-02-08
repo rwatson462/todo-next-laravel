@@ -13,5 +13,6 @@ type LoginResponse = {
 
 type RemoteUserRepository = {
   register: (data: RegisterForm) => Promise<LoginResponse>,
-  login: (data: LoginForm) => Promise<LoginResponse>
+  login: (data: LoginForm) => Promise<LoginResponse>,
+  check: (token: string) => Promise<LoginResponse>
 }

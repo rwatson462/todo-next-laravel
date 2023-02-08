@@ -9,7 +9,7 @@ export default function Cookies(
   const cookies = new C(request, response)
 
   return {
-    get: (name: string, defaultValue: string) => cookies.get(name) ?? defaultValue,
+    get: (name: string, defaultValue: string = '') => cookies.get(name) ?? defaultValue,
     set: (name: string, value: string, options: {}) => cookies.set(name, value, options),
     del: (name: string) => cookies.set(name),
     has: (name: string) => !!cookies.get(name)

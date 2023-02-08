@@ -66,7 +66,10 @@ nav ul, nav ul li{
 nav ul {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+}
+
+nav ul li.right {
+    margin-left: auto;
 }
 
 .form-group {

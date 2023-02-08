@@ -14,9 +14,10 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-      '/api/todo/all',
-      '/api/todo/create',
-      '/api/todo/:id/complete',
-      '/api/todo/:id/uncomplete',
+    '/api/todo/all',
+    '/api/todo/create',
+    '/api/todo/:id/complete',
+    '/api/todo/:id/uncomplete',
+    '/api/authCheck'
     ],
 }

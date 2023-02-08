@@ -3,12 +3,12 @@ import {User} from '@/types/user'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cookies from "@/server/Cookies";
 
-type ErrorResponse = {
+export type ErrorResponse = {
     errors: [],
     message: string
 }
 
-type UserResponse = {
+export type UserResponse = {
   user: User
 }
 
