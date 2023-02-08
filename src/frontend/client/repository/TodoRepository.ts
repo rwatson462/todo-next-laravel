@@ -1,6 +1,7 @@
 import axios from "axios"
 import useAuth from "@/client/Auth/Hooks/useAuth";
 import {NewTodoForm} from "@/client/components/NewTodoForm";
+import {Todo} from "@/types/todo";
 
 type TodoRepository = {
   getAll: () => Promise<Todo[]>,
