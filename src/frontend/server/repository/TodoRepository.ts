@@ -3,12 +3,12 @@ import * as process from "process";
 import {NewTodoForm} from "@/client/components/NewTodoForm";
 import {RemoteTodoRepository} from "@/types/todo";
 
-export default function TodoRepository(userTokenHeader: string): RemoteTodoRepository {
+export default function TodoRepository(token: string): RemoteTodoRepository {
   const client = axios.create({
     baseURL: process.env.API_URL,
     headers: {
       apikey: process.env.API_KEY,
-      Authorization: userTokenHeader,
+      authorization: `Bearer ${token}`,
     }
   })
 

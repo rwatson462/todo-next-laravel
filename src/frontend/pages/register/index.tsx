@@ -27,7 +27,6 @@ export default function RegisterPage(): ReactElement {
     mutationFn: (data: RegisterForm) => userRepository.register(data)
       .then(data => {
         auth.setUser(data.user)
-        auth.setToken(data.token)
         // redirect to login page
       }).catch(err => {
         setError(err.response.data.message)

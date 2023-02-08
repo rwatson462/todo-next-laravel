@@ -1,12 +1,15 @@
 import TodoRepository from '@/server/repository/TodoRepository'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import {Todo} from "@/types/todo";
+import Cookies from "@/server/Cookies";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Todo[]|Todo|string>
 ) {
   if (req.method?.toUpperCase() === 'GET') {
-    const todoRepository = TodoRepository(req.headers.authorization ?? '')
+    const cookies = Cookies(req, res)
+    const todoRepository = TodoRepository(cookies.get('token', ''))
 
     try {
       const todos = await todoRepository.getAll()
@@ -14,6 +17,7 @@ export default async function handler(
     } catch (err) {
       const message = (err as {message: string}).message
       if (message === 'Unauthenticated') {
+        cookies.del('token')
         res.status(401).send(message)
         return
       }

@@ -27,7 +27,6 @@ export default function LoginPage(): ReactElement {
       .then((data) => {
         // store user and token in Auth
         auth.setUser(data.user)
-        auth.setToken(data.token)
         // redirect to front page
         navigateTo('/')
       }).catch(err => setError(err.message))
