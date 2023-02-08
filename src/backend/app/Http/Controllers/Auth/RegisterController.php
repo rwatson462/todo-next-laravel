@@ -22,17 +22,18 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['emailAddress'],
-            'password' => $password
+            'password' => $password,
+            'last_active_at' => now(),
         ]);
 
-        $token = $user->createToken('login', ['user']);
+        $token = $user->createToken('login');
 
         return [
+            'token' => $token->plainTextToken,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
             ],
-            'token' => $token->plainTextToken,
         ];
     }
 }

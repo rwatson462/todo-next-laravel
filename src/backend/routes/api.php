@@ -12,7 +12,7 @@ Route::middleware('apikey')->group(function() {
         Route::post('login', [LoginController::class, 'login']);
     });
 
-    Route::middleware('auth:sanctum')->prefix('todo')->group(function () {
+    Route::middleware(['auth:sanctum', 'last-active'])->prefix('todo')->group(function () {
         Route::get('/', fn() => Todo::where('created_by', auth()->user()->id)->get());
         Route::put('/', [TodoController::class, 'create']);
         Route::post('/{todo}/complete', [TodoController::class, 'complete']);
