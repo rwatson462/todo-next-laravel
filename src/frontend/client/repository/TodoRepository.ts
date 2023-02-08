@@ -11,12 +11,9 @@ type TodoRepository = {
 }
 
 export default function TodoRepository(): TodoRepository {
-  const { getToken, logout } = useAuth()
+  const { logout } = useAuth()
   const client = axios.create({
     baseURL: '/api',
-    headers: {
-      authorization: `Bearer ${getToken()}`
-    }
   })
 
   client.interceptors.response.use(
