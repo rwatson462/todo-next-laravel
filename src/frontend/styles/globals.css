@@ -152,6 +152,11 @@ button:active {
     border-radius: 0.25rem;
     margin: 1rem 0;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+.todo-options p {
+    margin: 0;
 }
 
 .todo-options label {
