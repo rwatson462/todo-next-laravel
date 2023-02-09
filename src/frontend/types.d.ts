@@ -5,3 +5,8 @@ type CookiesType = {
   del: (name: string) => void,
   has: (name: string) => boolean,
 }
+
+
+type ErrorType = {
+  message: string
+}

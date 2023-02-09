@@ -2,11 +2,8 @@ import UserRepository from '@/server/repository/UserRepository'
 import {User} from '@/types/user'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cookies from "@/server/Cookies";
-
-export type ErrorResponse = {
-    errors: [],
-    message: string
-}
+import httpMethodNotAllowed from "@/server/functions/httpMethodNotAllowed";
+import setCookieToken from "@/server/functions/setCookieToken";
 
 export type UserResponse = {
   user: User
@@ -14,29 +11,27 @@ export type UserResponse = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<UserResponse|ErrorResponse|string>
+  res: NextApiResponse<UserResponse|string>
 ) {
-  if (req.method?.toUpperCase() === 'POST') {
-    const userRepository = UserRepository()
-    const cookies = Cookies(req, res)
-
-    try {
-
-      const response = await userRepository.login(req.body)
-      cookies.set('token', response.token, { maxAge: 1800000})  // Should be half an hour
-      res.status(200).json({user: response.user})
-
-    } catch (err) {
-
-      const error = (err as {message: ErrorResponse}).message as ErrorResponse
-      cookies.del('token')
-      console.log(err, error)
-      res.status(422).send(error)
-
-    }
-
+  if (httpMethodNotAllowed(req, res, 'POST')) {
     return
   }
 
-  res.status(400).send(`Invalid request method ${req.method}, expecting POST`)
+  const userRepository = UserRepository()
+  const cookies = Cookies(req, res)
+
+  try {
+
+    const response = await userRepository.login(req.body)
+    setCookieToken(cookies, response.token)
+    res.status(200).json({user: response.user})
+
+  } catch (err) {
+
+    const error = (err as ErrorType).message
+    console.log(err, error)
+    cookies.del('token')
+    res.status(422).send(error)
+
+  }
 }
