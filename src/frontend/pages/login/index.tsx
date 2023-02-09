@@ -9,6 +9,7 @@ import Fieldset from "@/client/components/Form/Fieldset";
 import FormGroup from "@/client/components/Form/FormGroup";
 import Input from "@/client/components/Form/Input";
 import Link from "next/link";
+import {useQueryClient} from "react-query";
 
 export type LoginForm = {
   emailAddress: string,
@@ -21,12 +22,15 @@ export default function LoginPage(): ReactElement {
   const auth = useAuth()
   const { push: navigateTo } = useRouter()
   const [ error, setError ] = useState('')
+  const queryClient = useQueryClient()
 
   function doLogin(data: LoginForm) {
     userRepository.login(data)
       .then((data) => {
         // store user and token in Auth
         auth.setUser(data.user)
+        // ensure we have no data cached
+        queryClient.invalidateQueries()
         // redirect to front page
         navigateTo('/')
       }).catch(err => setError(err.message))
