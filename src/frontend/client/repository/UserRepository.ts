@@ -27,8 +27,7 @@ export default function UserRepository(): UserRepository {
       axios.post('/api/authCheck')
         .then(response => response.data as LoginResponse)
         .catch(err => {
-          console.log(err)
-          throw new Error(err.response?.data)
+          throw new Error(err.response?.data?.message)
         })
     ),
     logout: () => (

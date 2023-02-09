@@ -3,7 +3,6 @@ import {AuthContext, AuthContextType} from "@/client/Auth/Context/AuthContext";
 import {User} from "@/types/user";
 import {useRouter} from "next/router";
 import UserRepository from "@/client/repository/UserRepository";
-import {deleteCookie, getCookie, getCookies, hasCookie} from "cookies-next";
 
 type AuthProviderProps = {
   children: ReactNode
@@ -42,7 +41,7 @@ export default function AuthProvider({ children }: AuthProviderProps): ReactElem
         setUser(response.user)
       })
       .catch(err => {
-        console.log(err)
+        console.log(err.message)
         setUser(null)
       })
     // eslint-disable-next-line

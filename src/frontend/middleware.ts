@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import Cookies from "./server/Cookies"
 
 export function middleware(req: NextRequest) {
   // Check for bearer token
-  const cookies = Cookies(req)
-  if (!cookies.has('token')) {
+  if (!req.cookies.get('token')?.value) {
     const url = req.nextUrl.clone()
     url.pathname = '/api/unauthenticated'
-    NextResponse.rewrite(url)
-    return
+    return NextResponse.rewrite(url)
   }
 }
 
