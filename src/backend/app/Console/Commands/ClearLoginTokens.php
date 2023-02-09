@@ -18,7 +18,11 @@ class ClearLoginTokens extends Command
         User::cursor()->each(function (User $user) {
             $this->tokensDeleted += $user->tokens()
                 ->where('name', 'login')
-                ->where('expires_at', '<', now())
+                ->where(function($query) {
+                    $query
+                        ->where('expires_at', '<', now())
+                        ->orWhere('last_used_at', '<', now()->subDays(1));
+                })
                 ->delete();
         });
 
