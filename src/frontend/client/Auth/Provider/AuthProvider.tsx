@@ -18,7 +18,6 @@ export default function AuthProvider({ children }: AuthProviderProps): ReactElem
     logout: () => {
       userRepository.logout()
         .then(() => setUser(null))
-        .catch(err => console.log(err))
     },
     setUser: (user: User) => {
       setUser(user)

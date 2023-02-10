@@ -1,10 +1,11 @@
 import axios from "axios"
 import useAuth from "@/client/Auth/Hooks/useAuth";
 import {NewTodoForm} from "@/client/components/NewTodoForm";
-import {Todo} from "@/types/todo";
+import {Todo, TodoGroup} from "@/types/todo";
 
 type TodoRepository = {
   getAll: () => Promise<Todo[]>,
+  getGroups: () => Promise<TodoGroup[]>,
   create: (data: NewTodoForm) => Promise<Todo>,
   complete: (id: number) => Promise<Todo>,
   uncomplete: (id: number) => Promise<Todo>,
@@ -21,17 +22,23 @@ export default function TodoRepository(): TodoRepository {
     error => {
       if (error.response.status === 401) {
         logout()
-        throw new Error('User is logged out')
+        console.log('User is logged out')
       }
-      return error
     }
   )
 
   return {
     getAll: () => (
       client.get('/todo/all')
-        .then(response => response.data)
-        .then(todos => todos === '' ? null : todos)
+        .then(response => response.data as Todo[])
+        .catch(err => {
+          throw new Error(err.message)
+        })
+    ),
+
+    getGroups: () => (
+      client.get('/todo/groups')
+        .then(response => response.data as TodoGroup[])
         .catch(err => {
           throw new Error(err.message)
         })

@@ -3,21 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use App\Models\TodoGroup;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
+    public function all()
+    {
+        return Todo::where('created_by', auth()->user()->id)->get();
+    }
+
+    public function getByGroup(TodoGroup $group)
+    {
+        return $group->todos()
+            ->where('created_by', auth()->user()->id)
+            ->get();
+    }
+
     public function create(Request $request)
     {
-        $title = $request->input('title');
-        $createdBy = auth()->user()->id;
-
-        $todo = Todo::create([
-            'title' => $title,
-            'created_by' => $createdBy,
+        $validated = $request->validate([
+            'title' => 'string|required',
+            'group_id' => 'integer|required|exists:todo_groups,id'
         ]);
 
-        return $todo;
+        return Todo::create([
+            ...$validated,
+            'created_by' => auth()->user()->id,
+        ]);
     }
 
     public function complete(Todo $todo)

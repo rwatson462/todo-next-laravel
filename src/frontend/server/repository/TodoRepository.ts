@@ -24,6 +24,17 @@ export default function TodoRepository(token: string): RemoteTodoRepository {
         })
     ),
 
+    getGroups: () => (
+      client.get('/groups')
+        .then(response => response.data)
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 401 || err.response?.status === 403) {
+            throw new Error('Unauthenticated')
+          }
+          throw new Error(JSON.stringify(err.response?.data))
+        })
+    ),
+
     create: (data: NewTodoForm) => (
       client.put('/todo', data)
         .then(response => response.data)

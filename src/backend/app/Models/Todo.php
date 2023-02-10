@@ -13,6 +13,7 @@ class Todo extends Model
         'title',
         'created_by',
         'completed_at',
+        'group_id',
     ];
 
     protected $casts = [
@@ -21,5 +22,9 @@ class Todo extends Model
 
     public function user() {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function group() {
+        return $this->belongsTo(TodoGroup::class, 'group_id');
     }
 }

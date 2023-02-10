@@ -2,25 +2,13 @@ import { ReactElement } from "react";
 import { useQuery } from "react-query";
 import TodoRepository from "../repository/TodoRepository";
 import TodoItem from "./Todo/TodoItem";
+import useTodo from "@/client/Todo/Hook/useTodo";
 
-type TodoListProps = {
-  showCompleteTodos: boolean
-}
+export default function TodoList(): ReactElement {
+  const { todos, currentGroup, showCompleteTodos } = useTodo()
 
-export default function TodoList({ showCompleteTodos }: TodoListProps): ReactElement {
-  const todoRepository = TodoRepository()
-
-  const { data: todos, isLoading, isError } = useQuery({
-    queryKey: ['todo'],
-    queryFn: () => todoRepository.getAll()
-  })
-
-  if (isLoading || !todos) {
+  if (!todos) {
     return <p>Loading todos...</p>
-  }
-
-  if (isError) {
-    return <p className='error'>Error loading todos, try refreshing the page</p>
   }
 
   return (
@@ -28,8 +16,9 @@ export default function TodoList({ showCompleteTodos }: TodoListProps): ReactEle
       <ul>
         {todos
           .filter(todo => showCompleteTodos || todo.completed_at === null)
+          .filter(todo => todo.group_id === currentGroup)
           .map((todo, key) => (
-            <TodoItem key={key} todo={todo} />
+            <TodoItem key={`todo-${key}`} todo={todo} />
           )
         )}
       </ul>
