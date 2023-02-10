@@ -2,6 +2,7 @@
 
 :root {
     --border-color: teal;
+    --body-width: 600px;
 }
 
 html {
@@ -14,8 +15,12 @@ html {
 }
 
 body {
-    max-width: 600px;
+    max-width: var(--body-width);
     margin: 0 auto;
+}
+
+header {
+    margin-top: 5rem;
 }
 
 h1 {
@@ -225,4 +230,20 @@ footer p {
     background-color: white;
     border-bottom: 2px solid white;
     margin-bottom: -2px;
+}
+
+
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #000D;
+    color: white;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.main-nav ul {
+    max-width: var(--body-width);
+    margin: 0 auto;
 }

@@ -2,10 +2,10 @@ import Header from "@/client/components/Header"
 import NewTodoForm from "@/client/components/NewTodoForm"
 import TodoOptions from "@/client/components/TodoOptions"
 import Footer from "@/client/components/Footer";
-import Nav from "@/client/components/Nav/Nav";
 import useAuth from "@/client/Auth/Hooks/useAuth";
 import TodoGroupContainer from "@/client/components/TodoGroup/TodoGroupContainer";
 import TodoProvider from "@/client/Todo/Provider/TodoProvider";
+import NavBar from "@/client/components/Nav/Navbar";
 
 export default function Home() {
   const auth = useAuth()
@@ -16,8 +16,8 @@ export default function Home() {
 
   return (
     <>
+      <NavBar />
       <Header />
-      <Nav />
       <TodoProvider>
         <NewTodoForm />
         <TodoOptions />
