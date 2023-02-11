@@ -39,8 +39,7 @@ export default function AuthProvider({ children }: AuthProviderProps): ReactElem
       .then(response => {
         setUser(response.user)
       })
-      .catch(err => {
-        console.log(err.message)
+      .catch(() => {
         setUser(null)
       })
     // eslint-disable-next-line

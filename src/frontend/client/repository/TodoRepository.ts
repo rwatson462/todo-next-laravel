@@ -1,7 +1,6 @@
-import axios from "axios"
-import useAuth from "@/client/Auth/Hooks/useAuth";
 import {NewTodoForm} from "@/client/components/NewTodoForm";
 import {Todo, TodoGroup} from "@/types/todo";
+import useClient from "../Http/useClient";
 
 type TodoRepository = {
   getAll: () => Promise<Todo[]>,
@@ -12,51 +11,27 @@ type TodoRepository = {
 }
 
 export default function TodoRepository(): TodoRepository {
-  const { logout } = useAuth()
-  const client = axios.create({
-    baseURL: '/api',
-  })
-
-  client.interceptors.response.use(
-    response => response,
-    error => {
-      if (error.response.status === 401) {
-        logout()
-        console.log('User is logged out')
-      }
-    }
-  )
+  const client = useClient()
 
   return {
     getAll: () => (
-      client.get('/todo/all')
-        .then(response => response.data as Todo[])
-        .catch(err => {
-          throw new Error(err.message)
-        })
+      client.get<Todo[]>('/todo/all')
     ),
 
     getGroups: () => (
-      client.get('/todo/groups')
-        .then(response => response.data as TodoGroup[])
-        .catch(err => {
-          throw new Error(err.message)
-        })
+      client.get<TodoGroup[]>('/todo/groups')
     ),
 
     create: (data) => (
-      client.put('/todo/create', data)
-        .then(response => response.data)
+      client.put<Todo>('/todo/create', data)
     ),
 
     complete: (id) => (
-      client.post(`/todo/${id}/complete`)
-        .then(response => response.data)
+      client.post<Todo>(`/todo/${id}/complete`)
     ),
 
     uncomplete: (id) => (
-      client.post(`/todo/${id}/uncomplete`)
-        .then(response => response.data)
+      client.post<Todo>(`/todo/${id}/uncomplete`)
     )
   }
 }

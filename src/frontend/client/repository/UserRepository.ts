@@ -1,6 +1,6 @@
 import { RegisterForm } from "@/pages/register"
 import { LoginResponse } from '@/types/user'
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import {LoginForm} from "@/pages/login";
 
 type UserRepository = {
@@ -26,8 +26,9 @@ export default function UserRepository(): UserRepository {
     check: () => (
       axios.post('/api/authCheck')
         .then(response => response.data as LoginResponse)
-        .catch(err => {
-          throw new Error(err.response?.data?.message)
+        .catch(() => {
+          // caught but we don't care about it
+          throw new Error('oops')
         })
     ),
     logout: () => (
