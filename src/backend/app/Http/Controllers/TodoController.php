@@ -23,7 +23,7 @@ class TodoController extends Controller
     public function create(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'string|required',
+            'title' => 'string|required|min:1|max:255',
             'group_id' => 'integer|required|exists:todo_groups,id'
         ]);
 
