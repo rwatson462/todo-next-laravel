@@ -1,8 +1,15 @@
 import {ReactElement, ReactNode, useEffect, useState} from "react";
-import {AuthContext, AuthContextType} from "@/client/Auth/Context/AuthContext";
+import {AuthContext} from "@/client/Auth/Context/AuthContext";
 import {User} from "@/types/user";
 import {useRouter} from "next/router";
 import UserRepository from "@/client/repository/UserRepository";
+
+export type AuthContextType = {
+  setUser: (user: User) => void,
+  isLoggedIn: () => boolean,
+  logout: () => void,
+  user: User|null,
+}
 
 type AuthProviderProps = {
   children: ReactNode
@@ -29,7 +36,9 @@ export default function AuthProvider({ children }: AuthProviderProps): ReactElem
     if (user === null) {
       navigateTo('/login')
     } else {
+      // If this is called due to a rerender (or React strict mode), an error is thrown which we don't need
       navigateTo('/')
+        .catch(err => { console.log(err) })
     }
     // eslint-disable-next-line
   }, [user])

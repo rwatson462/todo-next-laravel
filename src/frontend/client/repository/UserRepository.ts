@@ -1,6 +1,6 @@
 import { RegisterForm } from "@/pages/register"
 import { LoginResponse } from '@/types/user'
-import axios, { AxiosError } from "axios"
+import axios from "axios"
 import {LoginForm} from "@/pages/login";
 
 type UserRepository = {

@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios"
+import axios from "axios"
 import useAuth from "../Auth/Hooks/useAuth"
 
 type Client = {
@@ -21,8 +21,9 @@ export default function useClient(): Client {
     error => {
       if (error.response.status === 401) {
         logout()
-        console.log('User is logged out')
+        throw new Error('401')
       }
+      return error
     }
   )
 
@@ -30,33 +31,21 @@ export default function useClient(): Client {
     get: <T>(url: string, config = {}) => (
       client.get(url, config)
         .then(response => response.data as T)
-        .catch(err => {
-          throw new Error(err.message)
-        })
     ),
-    
+
     post: <T>(url: string, data = {}, config = {}) => (
       client.post(url, data, config)
         .then(response => response.data as T)
-        .catch(err => {
-          throw new Error(err.message)
-        })
     ),
 
     put: <T>(url: string, data = {}, config = {}) => (
       client.put(url, data, config)
-        .then(response => response.data as T)
-        .catch(err => {
-          throw new Error(err.message)
-        })
+        .then(response => response.data)
     ),
 
     patch: <T>(url: string, data = {}, config = {}) => (
       client.patch(url, data, config)
         .then(response => response.data as T)
-        .catch(err => {
-          throw new Error(err.message)
-        })
     ),
 
     // todo

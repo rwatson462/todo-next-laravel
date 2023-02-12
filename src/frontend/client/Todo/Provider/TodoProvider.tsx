@@ -1,7 +1,8 @@
-import {createContext, ReactElement, ReactNode, useState} from "react";
+import {ReactElement, ReactNode, useState} from "react";
 import {Todo, TodoGroup} from "@/types/todo";
 import {useQuery, useQueryClient} from "react-query";
 import TodoRepository from "@/client/repository/TodoRepository";
+import { TodoContext } from "../Context/TodoContext";
 
 export type TodoContextType = {
   todos: Todo[],
@@ -13,18 +14,18 @@ export type TodoContextType = {
   createTodo: (title: string) => void,
 }
 
-export const TodoContext = createContext<TodoContextType>({
-  todos: [],
-  groups: [],
-  currentGroup: null,
-  setCurrentGroup: id => {},
-  showCompleteTodos: false,
-  setShowCompleteTodos: () => {},
-  createTodo: () => {},
-})
-
 type TodoProviderProps = {
   children: ReactNode
+}
+
+
+function TodoErrorHandler(err: Error) {
+  const message = err.message
+  if (message === '401') {
+    // User has logged out due to inactivity, no further action to take
+    return
+  }
+  console.log(message)
 }
 
 export default function TodoProvider({ children }: TodoProviderProps): ReactElement {
@@ -35,14 +36,25 @@ export default function TodoProvider({ children }: TodoProviderProps): ReactElem
 
   const { data: groups } = useQuery({
     queryKey: ['todo-groups'],
-    queryFn: () => todoRepository.getGroups(),
+    queryFn: () => todoRepository.getGroups().catch(TodoErrorHandler),
     onSuccess: (data: TodoGroup[]) => setCurrentGroup(data?.length ? data[0].id : null)
   })
 
   const { data: todos } = useQuery({
     queryKey: ['todo'],
-    queryFn: () => todoRepository.getAll()
+    queryFn: () => todoRepository.getAll().catch(TodoErrorHandler)
   })
+
+  function createTodo(title: string) {
+    const todo = {
+      title,
+      group_id: currentGroup!
+    }
+
+    todoRepository.create(todo)
+      .then(() => queryClient.invalidateQueries(['todo']),)
+      .catch(TodoErrorHandler)
+  }
 
   const value: TodoContextType = {
     todos: todos ?? [],
@@ -51,16 +63,7 @@ export default function TodoProvider({ children }: TodoProviderProps): ReactElem
     setCurrentGroup: id => setCurrentGroup(id),
     showCompleteTodos,
     setShowCompleteTodos,
-    createTodo: (title) => {
-      const todo = {
-        title,
-        group_id: currentGroup!
-      }
-      todoRepository.create(todo)
-        .then(() => {
-          queryClient.invalidateQueries(['todo'])
-        })
-    }
+    createTodo,
   }
 
   return (
